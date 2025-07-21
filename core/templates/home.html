@@ -1,0 +1,84 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<head>
+    <style>
+        ul#note-list li {
+            display: inline;
+        }
+
+        .note-detail-link {
+            color: #000000;
+        }
+        .note-detail-link:hover {
+            text-decoration: none;
+            color: #000000;
+            }
+       ul#note-list {
+            padding: 0;
+            margin: 0;
+        }
+
+        .card { margin-bottom: 14px; }
+
+
+
+
+    </style>
+</head>
+{% if user.is_authenticated %}
+Hi {{ user.username }}!
+<form style="float: right">
+    {{filter.form}}
+</form>
+
+<ul id="note-list">
+    <hr>
+    {% for note in filter.qs %}
+
+    <div class="row justify-content-left">
+        <div class="col-6">
+            <a href="{% url 'note_detail' pk=note.id %}" class="note-detail-link">
+                <div class="card">
+
+                    <div class="card-body" style="flex:">
+                        <span class="title">{{note.title}}</span><br>
+                        <li>created by: {{note.created_by}} <span class="greyOut">|</span></li>
+                        <li>deadline:
+                            {% if note.get_time_diff < 25 %} <span class="deadlineNow"> {{note.deadline|date:'Y-m-d H:i' }} </span>
+                            {% elif note.get_time_diff < 73 %} <span class="deadlineSoon"> {{note.deadline|date:'Y-m-d H:i' }} </span>
+                            {% else %} <span class="deadlineOk"> {{note.deadline|date:'Y-m-d H:i' }} </span>
+                            {% endif %}
+                        </li>
+                        <li class="priority">
+                            <span class="greyOut">|</span> priority:
+                            <span class="{{note.priority}}"> {{note.priority}}</span>
+                        </li>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</ul>
+
+{% else %}
+<p class="entry">The aim of this application was creating a tool useful for managing and delegating your tasks at work
+    or
+    other projects.<br>
+    User can simply create notes and assign other users to it. It is not possible to edit note, by other people than
+    person who created it,
+    but it is possible for everyone to leave a comment.<br>
+    Also, a user can see the archive of the notes whether they met the deadline or not.
+    Note owner can move note to archive and back if necessary.
+    It is possible to change notes text and edit specific details.
+    One can set deadline and priority of note, add pictures, ect. Search-bar helps to find note we are looking for.<br>
+    <a href="{% url 'signup' %}"><font color="green">Join us!</font></a></p>
+
+
+<!--<p>Do you want to improve your <font color="green">work experience</font>? <br>-->
+<!--    Do you want to take it to <font color="green">the next level</font>? <br>-->
+<!--    Do you want your company to <font color="green">grow and prosper</font>? <br>-->
+<!--    <a href="{% url 'signup' %}"><font color="green">Join us!</font></a></p>-->
+{% endif %}
+{% endblock %}

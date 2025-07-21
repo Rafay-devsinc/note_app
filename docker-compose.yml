@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+      - media_volume:/app/media
+    ports:
+      - "3000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=NoteApp.settings
+    # command: python manage.py runserver 0.0.0.0:8000
+
+volumes:
+  media_volume:
