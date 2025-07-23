@@ -1,5 +1,5 @@
 
-## NOTE APP - the web application changed 
+## NOTE APP - the web application changed 2nd time
 
 #### Introduction - the project's aim
 
